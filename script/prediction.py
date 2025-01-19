@@ -21,7 +21,7 @@ from molvs import Standardizer
 from rdkit.Chem import SaltRemover
 import concurrent.futures
 
-### Load input file for prediction file contails ID, smiles
+### Load input file for prediction, Second column should always contains smiles.
 df = pd.read_csv("../input_smiles.csv")
 mol_list = df.iloc[:,1]
 smiles = mol_list
