@@ -1,5 +1,6 @@
 ### run XGB MTL model
 
+### Imports
 import numpy as np
 import pandas as pd
 import  scipy as scp
@@ -11,7 +12,7 @@ from scipy.stats import pearsonr, spearmanr
 from scipy.spatial import distance
 import pickle
 
-# Custom function for RMSE and R2 calculations
+### Custom function for RMSE and R2 calculations
 def rmse(a,b):
     return np.sqrt(np.sum((a-b)**2)/len(a))
 
@@ -39,12 +40,12 @@ cell_data_names = {'BR:MCF7':'MCF7', 'BR:MDA-MB-231':'MDA-MB-231_ATCC', 'BR:HS 5
                    'RE:ACHN':'ACHN', 'RE:CAKI-1':'CAKI-1', 'RE:RXF 393':'RXF_393', 
                    'RE:SN12C':'SN12C', 'RE:TK-10':'TK-10', 'RE:UO-31':'UO-31'}
 
-# Provide the full path to the profile data available in this repository. Ensure the file is unzipped before use.
+### Provide the full path to the profile data available in this repository. Ensure the file is unzipped before use.
 a = pd.read_excel('../profile_data/RNA__Affy_HG_U133_Plus_2.0_RMA.xls', skiprows=10, header=0, na_values='-')
 gexp = np.array(a.groupby("Gene name d", as_index=False).mean().loc[:,'BR:MCF7':].T, dtype=np.float32)
 cells_in_gexp = [cell_data_names[i] for i in a.columns[9:]]
 
-# only in case of GeneExp profile because it does not have data for ME:MDA-N cell line
+### only in case of GeneExp profile because it does not have data for ME:MDA-N cell line
 gexp = np.delete(gexp,33,0)
 cells_in_gexp.remove('')
 
@@ -58,7 +59,7 @@ best_indices = list(range(len(gexp[0])))
 
 start = time.time()
 
-# Provide the full path to the features calculated in Step 1 of processing the NCI-60 dataset.
+### Provide the full path to the features calculated in Step 1 of processing the NCI-60 dataset.
 traindata = pd.read_csv('../cell_line_smile/'+cells_in_gexp[0]+'.train.csv')
 y_train = traindata.NLOGGI50_N.values
 traindata.drop(columns= ['PANEL','CELL','STD_SMILE','NLOGGI50_N','NSC','SMILE'], inplace=True)
@@ -76,13 +77,13 @@ for c in cells_in_gexp[1:]:
 
 print(x_train.shape)
 
-## Model training
+### Model training
 XGB_model = xgb.XGBRegressor(max_depth=7, learning_rate=0.05, n_estimators=745, colsample_bytree=0.56, n_jobs=-1)
 
 XGB_model.fit(x_train, y_train, eval_metric='rmse')
 print('Model building took', int(time.time() - start)//60, 'min.' )
 
-# Save trained model
+### Save trained model
 model_path = '../MTL_XGB.dat'
 with open(model_path, 'wb') as file:
     pickle.dump(XGB_model, file)
