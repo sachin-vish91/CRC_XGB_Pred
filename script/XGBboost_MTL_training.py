@@ -66,7 +66,7 @@ x_train = np.hstack([x_train, np.tile(spearman_kernel[0], (len(x_train),1))])
 for c in cells_in_gexp[1:]:
     traindata = pd.read_csv('../cell_line_smile/'+c+'.train.csv')
     y_train1 = traindata.NLOGGI50_N.values
-    traindata.drop(columns= ['PANEL','CELL','STD_SMILE','NLOGGI50_N','NSC','SMILE','ChEMBL_ID'], inplace=True)
+    traindata.drop(columns= ['PANEL','CELL','STD_SMILE','NLOGGI50_N','NSC','SMILE'], inplace=True)
     t = traindata.values
     t = np.hstack([t, np.tile(spearman_kernel[cells_in_gexp.index(c)], (len(t),1))])
     x_train = np.vstack([x_train, t])
