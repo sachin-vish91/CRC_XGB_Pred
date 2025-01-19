@@ -14,7 +14,8 @@ XGBoost-based machine learning model for predicting activity on the colorectal c
 ```xgboost         1.1.1``` <br />
 
 ##  2. NCI-60 data preparation
-
+- Create a Python environment following the instructions in the Environment Setup guide.
+  
 - Download the ```processing.py``` script.
 
 - In your current working directory, create a folder named ```Dataset```.
@@ -25,8 +26,6 @@ XGBoost-based machine learning model for predicting activity on the colorectal c
    - [Chemical Dataset](https://wiki.nci.nih.gov/display/NCIDTPdata/Chemical+Data?preview=/155844992/339380766/Chem2D_Jun2016.zip)
 
 - Unzip both downloaded files into the ```Dataset``` directory.
-
-- Activate the Conda Environment as per the Environment Setup instructions.
 
 - Execute the following command to process the datasets:<br />
    ```python processing.py```
