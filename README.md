@@ -13,7 +13,7 @@ XGBoost-based machine learning model for predicting activity on the colorectal c
 ```scipy           1.4.1``` <br />
 ```xgboost         1.1.1``` <br />
 
-##  2. Data preparation
+##  2. NCI-60 data preparation
 
 - Download the ```processing.py``` script.
 
@@ -32,13 +32,13 @@ XGBoost-based machine learning model for predicting activity on the colorectal c
    ```python processing.py```
 
 
-## 3. Machine Learning Model Training
+## 3. Machine learning model training (XGBoost)
 
 To train the machine learning model, use the following script:<br />
    ```python ../script/XGBboost_MTL_training.py```
 
 
-## 4. Prediction with Trained Model
+## 4. Prediction with trained XGBoost model
 
 After the model training is complete, use the following script to make predictions on a new dataset:<br />
    ```python ../script/prediction.py```
