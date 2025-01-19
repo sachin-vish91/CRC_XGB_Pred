@@ -1,5 +1,5 @@
 # CRC_XGB_Pred
-XGB based machine learning model for the prediction of activity on colorectal  cancer cell line (KM-12)
+XGBoost-based machine learning model for predicting activity on the colorectal cancer cell line (KM-12).
 
 ##  1. Environment Setup <br />
 ```Python          3.7.3``` <br />
