@@ -17,7 +17,7 @@ xgboost      = 1.1.1 <br />
 NCI-60 data preparation.
 
 Steps to run the script:
-1. Download the Dataprocessing.py file.
+1. Download the processing.py file.
 2. Create a directory named **Dataset** in you current working directory.
 3. Download the NCI-60 and chemical dataset into your **Dataset** directory using link below.
 
