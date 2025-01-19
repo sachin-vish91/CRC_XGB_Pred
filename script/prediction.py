@@ -1,16 +1,13 @@
 # Prediciton on XGBboost MTL trained model.
 
-import glob, argparse
 import numpy as np
 import pandas as pd
-import pandas.util.testing as tm
-import matplotlib.pyplot as plt
-import  scipy as scp
-import random, sys
-import sys, time, os
-from sklearn.preprocessing import MinMaxScaler
 from scipy.stats import pearsonr, spearmanr
 from scipy.spatial import distance
+import glob, argparse
+import sys, time, os, random
+import  scipy as scp
+from sklearn.preprocessing import MinMaxScaler
 import xgboost as xgb
 import tarfile
 import pickle
@@ -91,14 +88,6 @@ col_names.remove('smiles')
 test2 = df.loc[:,col_names]
 
 ### Load profile data
-
-import numpy as np
-import pandas as pd
-from scipy.stats import pearsonr, spearmanr
-from scipy.spatial import distance
-import glob, argparse
-from itertools import chain
-import sys, time, os
 
 cell_data_names = {'BR:MCF7':'MCF7', 'BR:MDA-MB-231':'MDA-MB-231_ATCC', 'BR:HS 578T':'HS_578T', 
                    'BR:BT-549':'BT-549', 'BR:T-47D':'T-47D', 'CNS:SF-268':'SF-268',
