@@ -74,9 +74,9 @@ for c in cells_in_gexp[1:]:
 
 print(x_train.shape)
 
-mymodel = xgb.XGBRegressor(max_depth=10, learning_rate=0.05, n_estimators=1000, colsample_bytree=0.9, n_jobs=35)
+XGB_model = xgb.XGBRegressor(max_depth=10, learning_rate=0.05, n_estimators=1000, colsample_bytree=0.9, n_jobs=35)
 
-mymodel.fit(x_train, y_train, eval_metric='rmse')
+XGB_model.fit(x_train, y_train, eval_metric='rmse')
 print('Model building took', int(time.time() - start)//60, 'min.' )
 
 # Save trained XGBoost model
@@ -84,4 +84,4 @@ model_path = '../MTL_XGB.dat'
 
 # Save the model using pickle
 with open(model_path, 'wb') as file:
-    pickle.dump(model, file)
+    pickle.dump(XGB_model, file)
