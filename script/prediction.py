@@ -1,5 +1,5 @@
 # Prediciton on XGBboost MTL trained model.
-
+### Imports
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
@@ -48,7 +48,7 @@ def Morgan_fingerprints(smi):
         fingerprint_desc = ''
     return fingerprint_desc
 
-#code for the parallel computing multiple molecules at a time
+### code for the parallel computing multiple molecules at a time
 with concurrent.futures.ProcessPoolExecutor() as executor:
     future = executor.map(Morgan_fingerprints, smiles)
     for result in future:
@@ -68,7 +68,7 @@ A = [Fig,PH,smile]
 
 col_names = list(chain(*A))
 
-# Normalize the data this will return the value between 0 and 1
+### Normalize the data this will return the value between 0 and 1
 
 def Normalization(x,overall_min,overall_max):
     #overall_min = 45 # specify the global minimun from all the datasets
@@ -117,11 +117,11 @@ a = pd.read_excel(f[0], skiprows=10, header=0, na_values='-')
 
 a.dropna(subset=a.columns[9:], axis=0, inplace=True)
 
-#Transforming the data using groupby and calculating mean of duplicate entry
+### Transforming the data using groupby and calculating mean of duplicate entry
 tmp = np.array(a.groupby('Gene name d', as_index=False).mean().loc[:,'BR:MCF7':].T, dtype=np.float32)
 cells_from_profile = [cell_data_names[i] for i in a.columns[9:]]
 
-# Important pre-processing of GeneExp Profile because in this profile the data is not available for MDA-N cell line
+### Important pre-processing of GeneExp Profile because in this profile the data is not available for MDA-N cell line
 if args_p == 'GeneExp':
     tmp = np.delete(tmp,33,0)
     cells_from_profile.remove('MDA-N')
@@ -140,9 +140,9 @@ test = np.hstack([test2, np.tile(pp[cells_from_profile.index('KM12')], (len(test
 ### Load trained model
 
 XGBboost = pickle.load(open('../MTL_XGB.dat', "rb"))
-preds = mymodel.predict(test)
+preds = XGBboost.predict(test)
 
-# Save predictions to a CSV file
+### Save predictions to a CSV file
 output = pd.DataFrame({'Prediction': preds})
 output.to_csv('predictions.csv', index=False)
 
