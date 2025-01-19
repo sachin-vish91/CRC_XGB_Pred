@@ -25,8 +25,8 @@ import concurrent.futures
 df = pd.read_csv(arg_o)
 mol_list = df.iloc[:,1]
 smiles = mol_list
-### Generate feature for the input file
 
+### Generate feature for the input file
 def Morgan_fingerprints(smi):
     try:
         mol = Chem.MolFromSmiles(smi)
@@ -68,7 +68,8 @@ A = [Fig,PH,smile]
 
 col_names = list(chain(*A))
 
-#Normalize the data this will return the value between 0 and 1
+# Normalize the data this will return the value between 0 and 1
+
 def Normalization(x,overall_min,overall_max):
     #overall_min = 45 # specify the global minimun from all the datasets
     #overall_max = 800 # specify the global maximum from all the datasets
@@ -88,7 +89,6 @@ col_names.remove('smiles')
 test2 = df.loc[:,col_names]
 
 ### Load profile data
-
 cell_data_names = {'BR:MCF7':'MCF7', 'BR:MDA-MB-231':'MDA-MB-231_ATCC', 'BR:HS 578T':'HS_578T', 
                    'BR:BT-549':'BT-549', 'BR:T-47D':'T-47D', 'CNS:SF-268':'SF-268',
                    'CNS:SF-295':'SF-295', 'CNS:SF-539':'SF-539', 'CNS:SNB-19':'SNB-19', 
@@ -121,8 +121,7 @@ a.dropna(subset=a.columns[9:], axis=0, inplace=True)
 tmp = np.array(a.groupby('Gene name d', as_index=False).mean().loc[:,'BR:MCF7':].T, dtype=np.float32)
 cells_from_profile = [cell_data_names[i] for i in a.columns[9:]]
 
-
-#Important pre-processing of GeneExp Profile because in this profile the data is not available for MDA-N cell line
+# Important pre-processing of GeneExp Profile because in this profile the data is not available for MDA-N cell line
 if args_p == 'GeneExp':
     tmp = np.delete(tmp,33,0)
     cells_from_profile.remove('MDA-N')
@@ -143,3 +142,8 @@ test = np.hstack([test2, np.tile(pp[cells_from_profile.index('KM12')], (len(test
 XGBboost = pickle.load(open('../MTL_XGB.dat', "rb"))
 preds = mymodel.predict(test)
 
+# Save predictions to a CSV file
+output = pd.DataFrame({'Prediction': preds})
+output.to_csv('predictions.csv', index=False)
+
+print("Predictions saved to 'predictions.csv'.")
