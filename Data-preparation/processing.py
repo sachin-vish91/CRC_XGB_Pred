@@ -1,4 +1,4 @@
-## Script to process NCI-60 dataset.
+### Script to process NCI-60 dataset.
 import numpy as np
 import pandas as pd
 from molvs import Standardizer
@@ -15,8 +15,7 @@ import concurrent.futures
 from sklearn.model_selection import train_test_split, cross_val_predict, KFold
 import openbabel
 
-########################################################################################
-# 60 cell line included in this study
+### cell line included in this study
 cells_from_profile = ['MCF7',  'MDA-MB-231_ATCC', 'HS_578T', 'BT-549', 'T-47D', 'SF-268', 
           'SF-295', 'SF-539', 'SNB-19', 'SNB-75','U251', 'COLO_205', 'HCC-2998',
           'HCT-116', 'HCT-15', 'HT29', 'KM12', 'SW-620', 'CCRF-CEM', 'HL-60(TB)', 
@@ -31,7 +30,7 @@ out_dir = 'Datasets'
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
-# Convert .sdf file into .smi for extracting the SMILES notation and NSC IDs of the molecules.
+### Convert .sdf file into .smi for extracting the SMILES notation and NSC IDs of the molecules.
 conv=openbabel.OBConversion()
 conv.OpenInAndOutFiles("Datasets/Chem2D_Jun2016.sdf","Datasets/Chem2D_Jun2016.smi")
 conv.SetInAndOutFormats("sdf","smi")
@@ -41,7 +40,7 @@ conv.Convert()
 filename = 'Datasets/CANCER60GI50.LST'
 SMILE_file = 'Datasets/Chem2D_Jun2016.smi'
 
-#Normalize the data this will return the value between 0 and 1
+### Normalize the data this will return the value between 0 and 1
 def Normalization(x,overall_min,overall_max):
     #overall_min = 45 # specify the global minimun from all the datasets
     #overall_max = 800 # specify the global maximum from all the datasets
@@ -49,7 +48,7 @@ def Normalization(x,overall_min,overall_max):
     
     return x
 
-# Function to process and load the NCI-60 dataset
+### Function to process and load the NCI-60 dataset
 def preprocesing(filename,SMILE_file):
   # Load the NCI-60 dataset
   data = pd.read_csv(filename, delimiter=',')
@@ -92,7 +91,7 @@ df_smile = preprocesing(filename, SMILE_file)
 smiles = df_smile.SMILE.unique()
 
 
-# Initialize the list for storing the data
+### Initialize the list for storing the data
 SMILES = []
 STD_SMILES = []
 Error = []
@@ -105,7 +104,7 @@ fingerprints_5 = []
 fingerprints_6 = []
 fingerprints_7 = []
 
-# Morgan fingerprint and physicochemical descriptor generation
+### Morgan fingerprint and physicochemical descriptor generation
 for m in smiles:
     try:
         m1 = m
@@ -129,7 +128,7 @@ for m in smiles:
     except:
         Error.append(m1)
 
-# Transform the features into Dataset
+### Transform the features into Dataset
 Fingerprints = pd.DataFrame(fingerprints)
 fingerprints_1 = pd.DataFrame(fingerprints_1)
 fingerprints_2 = pd.DataFrame(fingerprints_2)
@@ -152,7 +151,7 @@ smile_fingerprint = pd.concat([Original_SMILES,
                                fingerprints_6,
                                fingerprints_7], axis=1)
 
-# Rename the column names
+### Rename the column names
 smile = ['SMILE','STD_SMILE']
 Fig = list("F_{0}".format(i) for i in range(1,257))
 PH = ["MW","TPSA","LOGP","NAR","NARR","HBA","BHD"]
@@ -161,7 +160,7 @@ col_names = list(chain(*A))
 
 smile_fingerprint.columns = col_names
 
-# Normalization of physicochemical properties
+### Normalization of physicochemical properties
 smile_fingerprint.iloc[:,258] =  Normalization(x=smile_fingerprint.iloc[:,256], overall_min=0, overall_max=1288.39)
 smile_fingerprint.iloc[:,259] =  Normalization(x=smile_fingerprint.iloc[:,257], overall_min=32.03, overall_max=3351.54)
 smile_fingerprint.iloc[:,260] =  Normalization(x=smile_fingerprint.iloc[:,258], overall_min=-18.69, overall_max=41.84)
@@ -170,15 +169,15 @@ smile_fingerprint.iloc[:,262] =  Normalization(x=smile_fingerprint.iloc[:,260], 
 smile_fingerprint.iloc[:,263] =  Normalization(x=smile_fingerprint.iloc[:,261], overall_min=0, overall_max=79)
 smile_fingerprint.iloc[:,264] =  Normalization(x=smile_fingerprint.iloc[:,262], overall_min=0, overall_max=47)
 
-# Merge the compouds features with main data set.
+### Merge the compouds features with main data set.
 Merged_data = df_smile.merge(smile_fingerprint, how = 'left', left_on=['SMILE'],right_on=['SMILE'])
 
-# Remove any entry which contains NaN 
+### Remove any entry which contains NaN 
 Combined_data = Merged_data[Merged_data.BHD.notnull()]
 
 Combined_data["CELL"] = Combined_data.loc[:,"CELL"].str.strip()
 
-# Rename some of cell line names
+### Rename some of cell line names
 Combined_data["CELL"].replace({"A549/ATCC": "A549_ATCC", 
                                    "NCI/ADR-RES": "NCI_ADR-RES",
                                    'MDA-MB-231/ATCC': 'MDA-MB-231_ATCC',
@@ -190,7 +189,7 @@ Combined_data["CELL"].replace({"A549/ATCC": "A549_ATCC",
 Combined_data = Combined_data[Combined_data['CELL'].isin(cells_from_profile)]
 Tested_molecule = Combined_data.loc[:, ['NSC', 'CELL', 'SMILE']]
 
-# Export tested molecules to a file
+### Export tested molecules to a file
 Tested_molecule.to_csv('Datasets/All_tested_molecules.csv', index=False)
 
 pGI50_NSC = ['NLOGGI50_N','NSC','SMILE']
@@ -203,7 +202,7 @@ out_dir = 'Features'
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
-# Export the data into file for 60 cell lines
+### Export the data into file for 60 cell lines
 for i in cells_from_profile:
     df_cell_subset = Combined_data[Combined_data['CELL'] == i]
     df_cell_subset.drop(['CELL'] , axis='columns', inplace=True)
