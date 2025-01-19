@@ -1,46 +1,46 @@
 # CRC_XGB_Pred
 XGB based machine learning model for the prediction of activity on colorectal  cancer cell line (KM-12)
 
-##  1. Environment Setup for Running the Models** <br />
-Python = 3.7.3 <br />
-MolVS = 0.1.1 <br />
-standardiser = 0.1.9 <br />
-matplotlib = 3.3.4 <br />
-numpy       =  1.17.3 <br />
-pandas       = 1.2.1 <br />
-Babel       =  2.7.0 <br />
-scikit-learn = 0.23.2 <br />
-scipy        = 1.4.1 <br />
-xgboost      = 1.1.1 <br />
+##  1. Environment Setup <br />
+```Python          3.7.3``` <br />
+```MolVS           0.1.1``` <br />
+```standardiser    0.1.9``` <br />
+```matplotlib      3.3.4``` <br />
+```numpy           1.17.3``` <br />
+```pandas          1.2.1``` <br />
+```Babel           2.7.0``` <br />
+```scikit-learn    0.23.2``` <br />
+```scipy           1.4.1``` <br />
+```xgboost         1.1.1``` <br />
 
 ##  2. Data preparation
-NCI-60 data preparation.
 
-Steps to run the script:
-1. Download the processing.py file.
-2. Create a directory named **Dataset** in you current working directory.
-3. Download the NCI-60 and chemical dataset into your **Dataset** directory using link below.
+- Download the ```processing.py``` script.
 
-NCI-60 dataset download link: https://wiki.nci.nih.gov/display/NCIDTPdata/NCI-60+Data+Download+-+Previous+Releases?preview=/147193864/374736079/NCI60_GI50_2016b.zip.
+- In your current working directory, create a folder named ```Dataset```.
 
-Chemical data download link: https://wiki.nci.nih.gov/display/NCIDTPdata/Chemical+Data?preview=/155844992/339380766/Chem2D_Jun2016.zip
+- Download the following datasets into the Dataset directory:
 
-4. Unzip both the downloaded files.
-5. Activate conda env created using Environment Setup.
-4. Once all the files are ready, run the followint script:<br />
+   - [NCI-60 dataset](https://wiki.nci.nih.gov/display/NCIDTPdata/NCI-60+Data+Download+-+Previous+Releases?preview=/147193864/374736079/NCI60_GI50_2016b.zip) <br />
+   - [Chemical Dataset](https://wiki.nci.nih.gov/display/NCIDTPdata/Chemical+Data?preview=/155844992/339380766/Chem2D_Jun2016.zip)
+
+- Unzip both downloaded files into the ```Dataset``` directory.
+
+- Activate the Conda Environment as per the Environment Setup instructions.
+
+- Execute the following command to process the datasets:<br />
    ```python processing.py```
-6. The output of this scipt will be automatically store into **Dataset/All_tested_molecules.csv** and cell line data per cell line will be saved in **cell_line_smile**.
-7. The **cell_line_smile** directory will have 60 .csv files, each for the one cell line. The colums names are: [NLOGGI50, NSC, SMILE, molecular features]
+
 
 ## 3. Machine Learning Model Training
 
 To train the machine learning model, use the following script:<br />
-```python ../script/XGBboost_MTL_training.py```
+   ```python ../script/XGBboost_MTL_training.py```
 
 
 ## 4. Prediction with Trained Model
 
 After the model training is complete, use the following script to make predictions on a new dataset:<br />
-```python ../script/prediction.py```
+   ```python ../script/prediction.py```
 
 **Note**: Make sure to update the file paths in the script as required for your dataset and environment.
