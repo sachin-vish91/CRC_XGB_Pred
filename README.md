@@ -27,8 +27,20 @@ Chemical data download link: https://wiki.nci.nih.gov/display/NCIDTPdata/Chemica
 
 4. Unzip both the downloaded files.
 5. Activate conda env created using Environment Setup.
-4. Once all the files are ready, run the followint script: **python processing.py**
+4. Once all the files are ready, run the followint script:<br />
+   ```python processing.py```
 6. The output of this scipt will be automatically store into **Dataset/All_tested_molecules.csv** and cell line data per cell line will be saved in **cell_line_smile**.
 7. The **cell_line_smile** directory will have 60 .csv files, each for the one cell line. The colums names are: [NLOGGI50, NSC, SMILE, molecular features]
 
-## 3. Machine learning model building
+## 3. Machine Learning Model Training
+
+To train the machine learning model, use the following script:<br />
+```python ../script/XGBboost_MTL_training.py```
+
+
+## 4. Prediction with Trained Model
+
+After the model training is complete, use the following script to make predictions on a new dataset:<br />
+```python ../script/prediction.py```
+
+**Note**: Make sure to update the file paths in the script as required for your dataset and environment.
